@@ -8,3 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+
+# environment variable
+.env
+
+# memo
+text.txt
+memo.txt
