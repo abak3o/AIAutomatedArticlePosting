@@ -11,3 +11,7 @@ wheels/
 
 # environment variable
 .env
+
+# memo
+text.txt
+memo.txt

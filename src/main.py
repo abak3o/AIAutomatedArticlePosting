@@ -1,8 +1,9 @@
 import os
-import datetime
+import time
 import logging
 from dotenv import load_dotenv
 from playwright.sync_api import Playwright, sync_playwright
+from ai import chatGPT
 
 # ログ設定
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -45,26 +46,26 @@ def create_article(page, title, content):
     page.mouse.click(1124, 400)
     page.keyboard.insert_text(content)
     logging.info("📝 記事本文を入力しました")
+    time.sleep(3)
 
     # 公開処理
     page.mouse.click(1105, 805)
     page.get_by_role("button", name="OK").click()
     logging.info("🚀 記事を投稿しました")
 
-
 def run(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
+    # browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     context = browser.new_context(viewport=VIEWPORT)
     page = context.new_page()
 
-    # 記事内容
-    dt_now = datetime.datetime.now()
-    content = f"投稿内容 {dt_now}"
-    title = "article_title"
+    content = chatGPT()
+    title = "title"
 
     # 処理実行
     login(page)
     create_article(page, title, content)
+    print(f"title: {title}\nで\n\n${content}\n\nで投稿しました")
 
     # クローズ処理
     context.close()
