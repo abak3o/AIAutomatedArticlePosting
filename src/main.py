@@ -3,7 +3,7 @@ import time
 import logging
 from dotenv import load_dotenv
 from playwright.sync_api import Playwright, sync_playwright
-from ai import chatGPT
+from ai import chatGPT, gemini
 
 # ログ設定
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
