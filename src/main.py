@@ -18,7 +18,6 @@ LIVEDOOR_USER_PASSWD = os.getenv("LIVEDOOR_USER_PASSWD")
 VIEWPORT = {"width": 1920, "height": 1000}
 WAIT_TIMEOUT = 10000  # 10秒
 
-
 def login(page):
     """ログイン処理"""
     page.goto(LIVEDOOR_URL)
@@ -29,7 +28,6 @@ def login(page):
     # マイページが表示されるまで待つ
     page.get_by_role("link", name="マイページ").wait_for(timeout=WAIT_TIMEOUT)
     logging.info("✅ ログイン完了")
-
 
 def create_article(page, title, content):
     """記事を作成・投稿"""
