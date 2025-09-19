@@ -1,10 +1,12 @@
 import re
 import json
 
+
 def get_thread() -> str:
     with open("text.txt", mode="r", encoding="UTF-8") as f:
         data = f.read()
     return data
+
 
 def format_thread2json(thread: str) -> str:
     split_list = re.split(r'(\n\^)', thread)
@@ -34,6 +36,7 @@ def format_thread2json(thread: str) -> str:
     json_output = json.dumps(thread_data, ensure_ascii=False, indent=2)
     
     return json_output
+
 
 def convert_json2html(json_data):
     thread_data = json.loads(json_data)
