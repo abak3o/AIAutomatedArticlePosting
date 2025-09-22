@@ -3,8 +3,9 @@ import time
 import logging
 from dotenv import load_dotenv
 from playwright.sync_api import Playwright, sync_playwright
-from ai import chatGPT, gemini, deepsheek
+from ai import chatGPT, gemini, deepseek
 from thread2html import thread2html
+from discord import send_discord_log
 
 # ログ設定
 logging.basicConfig(
@@ -33,10 +34,13 @@ def login(page):
         # マイページが表示されるまで待つ
         page.get_by_role("link", name="マイページ").wait_for(timeout=WAIT_TIMEOUT)
         logging.info("✅ ログイン完了")
+        send_discord_log("✅ ログイン完了")
         return True
 
     except Exception as e:
         logging.error(f"❌ ログイン失敗: {e}")
+        send_discord_log(f"❌ ログイン失敗: {e}")
+
         return False
 
 
@@ -48,6 +52,7 @@ def create_article(page, title, content):
         page.get_by_role("link", name="記事を書く").click()
         page.locator("#entry_title").wait_for(timeout=WAIT_TIMEOUT)
         logging.info("📝 記事作成ページを開きました")
+        send_discord_log("📝 記事作成ページを開きました")
 
         # タイトル入力
         page.locator("#entry_title").fill(title)
@@ -56,14 +61,17 @@ def create_article(page, title, content):
         page.mouse.click(1124, 400)
         page.keyboard.insert_text(content)
         logging.info("📝 記事本文を入力しました")
+        send_discord_log("📝 記事本文を入力しました")
         time.sleep(3)
 
         # 公開処理
         page.mouse.click(1105, 805)
         page.get_by_role("button", name="OK").click()
         logging.info("🚀 記事を投稿しました")
+        send_discord_log("🚀 記事を投稿しました")
     except Exception as e:
         logging.error(f"❌ 記事投稿失敗: {e}")
+        send_discord_log(f"❌ 記事投稿失敗: {e}")
 
 
 def run(playwright: Playwright) -> None:

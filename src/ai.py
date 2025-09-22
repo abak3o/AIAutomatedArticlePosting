@@ -24,6 +24,7 @@ def chatGPT() -> str:
 
     return response.output_text
 
+
 def gemini() -> str:
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     client = genai.Client(api_key=GOOGLE_API_KEY)
@@ -33,6 +34,7 @@ def gemini() -> str:
         )
 
     return response.text
+
 
 def deepsheek() -> str:
     DEEPSHEEK_API_KEY = os.getenv("DEEPSHEEK_API_KEY")
