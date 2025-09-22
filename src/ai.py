@@ -6,7 +6,7 @@ from google import genai
 load_dotenv()
 PROMPT = os.getenv("PROMPT")
 INSTRUCTIONS = os.getenv("INSTRUCTIONS")
-
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 def chatGPT() -> str:
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -28,11 +28,10 @@ def chatGPT() -> str:
 def gemini() -> str:
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     client = genai.Client(api_key=GOOGLE_API_KEY)
-    response = client.models.generate_content(model="gemini-2.5-flash", contents=PROMPT)
-
-    print(response.text)
-    with open("text.txt", mode="w", encoding="UTF-8") as f:
-        f.write(response.text)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=PROMPT
+        )
 
     return response.text
 
@@ -64,5 +63,5 @@ def deepsheek() -> str:
 
 if __name__ == "__main__":
     # chatGPT()
-    # gemini()
-    deepsheek()
+    gemini()
+    # deepsheek()

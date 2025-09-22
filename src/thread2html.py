@@ -1,5 +1,6 @@
 import re
 import json
+from ai import chatGPT, gemini, deepsheek
 
 
 def get_thread() -> str:
@@ -21,7 +22,6 @@ def format_thread2json(thread: str) -> str:
         post_data = {
             "id": post_number,
             "user": "名無しのJ民",
-            "userID": "dkdkdkd2",
             "content": content
         }
         
@@ -57,7 +57,7 @@ def convert_json2html(json_data):
     for post in posts:
         post_html = f"""
     <div>
-        <p>{post['id']} ：{post['user']}</p>
+        <p><span>{post['id']}：</span><span>{post['user']}</p>
         <p>{post['content']}</p>
     </div>
 """
@@ -67,15 +67,24 @@ def convert_json2html(json_data):
 </html>
 """
     
-    return html_output
+    return title, html_output
+
+
+def thread2html(thread):
+    json_text = format_thread2json(thread)
+    title, html = convert_json2html(json_text)
+    
+    return title, html
 
 
 if __name__ == "__main__":
-    text = get_thread()
+    # text = get_thread()
+    text = gemini()
     json_text = format_thread2json(text)
     print(json_text)
 
-    html_result = convert_json2html(json_text)
+    title, html_result = convert_json2html(json_text)
+    print("title\n")
+    print(title)
+    print("html_result\n")
     print(html_result)
-    with open("index.html", mode="w", encoding="UTF-8") as f:
-        f.write(html_result)        

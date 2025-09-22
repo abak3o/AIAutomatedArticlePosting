@@ -3,7 +3,8 @@ import time
 import logging
 from dotenv import load_dotenv
 from playwright.sync_api import Playwright, sync_playwright
-from ai import chatGPT, gemini, deepsheek
+from ai import chatGPT, gemini, deepseek
+from thread2html import thread2html
 from discord import send_discord_log
 
 # ログ設定
@@ -83,10 +84,8 @@ def run(playwright: Playwright) -> None:
         page = context.new_page()
 
         # ここでレスポンスから 記事タイトル と html を受け取る
-        # res = chatGPT()
-
-        content = "content"
-        title = "title"
+        res = gemini()
+        title, content = thread2html(res)
 
         # 処理実行
         if not login(page):
