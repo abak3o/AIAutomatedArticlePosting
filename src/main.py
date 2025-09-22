@@ -4,6 +4,7 @@ import logging
 from dotenv import load_dotenv
 from playwright.sync_api import Playwright, sync_playwright
 from ai import chatGPT, gemini, deepsheek
+from thread2html import thread2html
 
 # ログ設定
 logging.basicConfig(
@@ -75,10 +76,8 @@ def run(playwright: Playwright) -> None:
         page = context.new_page()
 
         # ここでレスポンスから 記事タイトル と html を受け取る
-        res = chatGPT()
-
-        content = "content"
-        title = "title"
+        res = gemini()
+        title, content = thread2html(res)
 
         # 処理実行
         if not login(page):
@@ -93,8 +92,8 @@ def run(playwright: Playwright) -> None:
         logging.error(f"✖ 予期せぬエラー: {e}")
 
     finally:
-        if content:
-            content.close()
+        if context:
+            context.close()
         if browser:
             browser.close()
 
