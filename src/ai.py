@@ -24,6 +24,7 @@ def chatGPT() -> str:
 
     return response.output_text
 
+
 def gemini() -> str:
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     client = genai.Client(api_key=GOOGLE_API_KEY)
@@ -31,10 +32,13 @@ def gemini() -> str:
         model="gemini-2.5-flash",
         contents=PROMPT
         )
+    with open("text.txt", mode="w", encoding="UTF-8") as f:
+        f.write(response.text)
 
     return response.text
 
-def deepsheek() -> str:
+
+def deepseek() -> str:
     DEEPSHEEK_API_KEY = os.getenv("DEEPSHEEK_API_KEY")
     client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=DEEPSHEEK_API_KEY)
 
