@@ -2,6 +2,7 @@ import os
 import time
 import logging
 import schedule
+from config import config
 from datetime import datetime
 from dotenv import load_dotenv
 from playwright.sync_api import Playwright, sync_playwright
@@ -16,26 +17,18 @@ logging.basicConfig(
 
 # 環境変数読み込み
 load_dotenv()
-LIVEDOOR_URL = os.getenv("LIVEDOOR_URL")
-LIVEDOOR_USER_ID = os.getenv("LIVEDOOR_USER_ID")
-LIVEDOOR_USER_PASSWD = os.getenv("LIVEDOOR_USER_PASSWD")
-
-# 定数
-VIEWPORT = {"width": 1920, "height": 1000}
-WAIT_TIMEOUT = 10000  # 10秒
-
 
 def login(page):
     """ログイン処理"""
     try:
-        page.goto(LIVEDOOR_URL)
-        page.get_by_role("textbox", name="livedoor ID :").wait_for(timeout=WAIT_TIMEOUT)
-        page.get_by_role("textbox", name="livedoor ID :").fill(LIVEDOOR_USER_ID)
-        page.get_by_role("textbox", name="パスワード :").fill(LIVEDOOR_USER_PASSWD)
+        page.goto(config.LIVEDOOR_URL)
+        page.get_by_role("textbox", name="livedoor ID :").wait_for(timeout=config.WAIT_TIMEOUT)
+        page.get_by_role("textbox", name="livedoor ID :").fill(config.LIVEDOOR_USER_ID)
+        page.get_by_role("textbox", name="パスワード :").fill(config.LIVEDOOR_USER_PASSWD)
         page.get_by_role("button", name="Submit").click()
 
         # マイページが表示されるまで待つ
-        page.get_by_role("link", name="マイページ").wait_for(timeout=WAIT_TIMEOUT)
+        page.get_by_role("link", name="マイページ").wait_for(timeout=config.WAIT_TIMEOUT)
         logging.info("✅ ログイン完了")
         return True
 
@@ -52,7 +45,7 @@ def create_article(page, title, content):
         # 記事作成ページへ
         page.get_by_role("link", name="マイページ").click()
         page.get_by_role("link", name="記事を書く").click()
-        page.locator("#entry_title").wait_for(timeout=WAIT_TIMEOUT)
+        page.locator("#entry_title").wait_for(timeout=config.WAIT_TIMEOUT)
         logging.info("📝 記事作成ページを開きました")
 
         # タイトル入力
@@ -92,7 +85,7 @@ def run_article_posting():
         # with文を使わず、明示的に制御
         playwright = sync_playwright().start()
         browser = playwright.chromium.launch(headless=True)
-        context = browser.new_context(viewport=VIEWPORT)
+        context = browser.new_context(viewport=config.VIEWPORT)
         page = context.new_page()
 
         # AIから記事内容を取得
@@ -167,5 +160,7 @@ def main():
 
 
 if __name__ == "__main__":
-    run_article_posting()
+    # run_article_posting()
     # main()
+    run_article_posting()
+
