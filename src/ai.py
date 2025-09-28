@@ -1,48 +1,31 @@
-from dotenv import load_dotenv
-import os
 from openai import OpenAI
 from google import genai
+from config import config
 
-load_dotenv()
-PROMPT = os.getenv("PROMPT")
-INSTRUCTIONS = os.getenv("INSTRUCTIONS")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 def chatGPT() -> str:
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    client = OpenAI(api_key=os.getenv(OPENAI_API_KEY))
-
+    client = OpenAI(api_key=config.OPENAI_API_KEY)
     response = client.responses.create(
         model="gpt-5-mini",
-        instructions=INSTRUCTIONS,
-        input=PROMPT,
+        instructions=config.INSTRUCTIONS,
+        input=config.PROMPT,
     )
-
-    print(response.output_text)
-    with open("text.txt", mode="w", encoding="UTF-8") as f:
-        f.write(response.output_text)
-
     return response.output_text
 
 
 def gemini() -> str:
-    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-    client = genai.Client(api_key=GOOGLE_API_KEY)
+    client = genai.Client(api_key=config.GOOGLE_API_KEY)
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=PROMPT
-        )
-    with open("text.txt", mode="w", encoding="UTF-8") as f:
-        f.write(response.text)
-
+        model="gemini-2.5-flash", contents=config.PROMPT
+    )
     return response.text
 
 
 def deepseek() -> str:
-    DEEPSHEEK_API_KEY = os.getenv("DEEPSHEEK_API_KEY")
-    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=DEEPSHEEK_API_KEY)
-
-    completion = client.chat.completions.create(
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1", api_key=config.DEEPSEEK_API_KEY
+    )
+    resuponse = client.chat.completions.create(
         extra_headers={
             "HTTP-Referer": "<YOUR_SITE_URL>",
             "X-Title": "<YOUR_SITE_NAME>",
@@ -52,18 +35,19 @@ def deepseek() -> str:
             {
                 "role": "user",
                 # "content": "What is the meaning of life?"
-                "content": PROMPT,
+                "content": config.PROMPT,
             }
         ],
     )
-    print(completion.choices[0].message.content)
-    with open("text.txt", mode="w", encoding="UTF-8") as f:
-        f.write(completion.choices[0].message.content)
+    return resuponse.choices[0].message.content
 
-    return completion.choices[0].message.content
+
+def get_ai_response():
+    pass
 
 
 if __name__ == "__main__":
-    # chatGPT()
-    gemini()
-    # deepsheek()
+    # res = chatGPT()
+    # res = gemini()
+    res = deepseek()
+    print(res)

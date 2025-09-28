@@ -11,7 +11,10 @@ wheels/
 
 # environment variable
 .env
+.env.docker
 
 # memo
 text.txt
 memo.txt
+output.txt
+index.html
