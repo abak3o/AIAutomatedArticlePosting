@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y \
 RUN pip install uv playwright
 
 WORKDIR /app
-COPY .env /app/.env
 COPY . .
 
 RUN uv pip install --system .

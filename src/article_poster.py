@@ -24,6 +24,7 @@ class ArticlePoster:
         self.id = userID
         self.passwd = userPasswd
 
+
     def setup(self):
         try:
             self.playwright = sync_playwright().start()
@@ -36,6 +37,7 @@ class ArticlePoster:
         except Exception as e:
             self.logger.error(f"❌ ブラウザ起動失敗: {e}")
             return False
+
 
     def teardown(self):
         """リソースの解放 - このメソッドを追加"""
@@ -54,6 +56,7 @@ class ArticlePoster:
                 self.logger.info("🛑 Playwrightを停止しました")
         except Exception as e:
             self.logger.warning(f"リソース解放中の警告: {e}")
+
 
     def login(self):
         """ログイン処理"""
@@ -78,6 +81,7 @@ class ArticlePoster:
             send_discord_log(f"❌ ログイン失敗: {e}")
             return False
 
+
     def generate_article(self) -> tuple[str, str]:
         """記事生成"""
         try:
@@ -94,6 +98,7 @@ class ArticlePoster:
             self.logger.error(f"❌ 記事生成失敗: {e}")
             send_discord_log(f"❌ 記事生成失敗: {e}")
             raise
+
 
     def create_article(self, title: str, content: str) -> bool:
         """記事を作成・投稿"""
@@ -128,6 +133,7 @@ class ArticlePoster:
             send_discord_log(f"❌ 記事投稿失敗: {e}")
             return False
 
+
     def run(self) -> dict:
         """記事投稿のメイン処理 - 1回だけ実行"""
         start_time = datetime.now()
@@ -154,7 +160,7 @@ class ArticlePoster:
                     }
                     self.logger.info(f"✅ 投稿完了: {title}")
                     send_discord_log(f"✅ 投稿完了: {title}")
-                    print(f"title: {title}\nで\n\n{content}\n\nで投稿しました")
+                    print(f"title: {title}\nで投稿しました")
                     return result
                 else:
                     raise Exception("記事投稿に失敗しました")

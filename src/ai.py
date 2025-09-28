@@ -10,7 +10,6 @@ def chatGPT() -> str:
         instructions=config.INSTRUCTIONS,
         input=config.PROMPT,
     )
-
     return response.output_text
 
 
@@ -19,7 +18,6 @@ def gemini() -> str:
     response = client.models.generate_content(
         model="gemini-2.5-flash", contents=config.PROMPT
     )
-
     return response.text
 
 
@@ -42,6 +40,10 @@ def deepseek() -> str:
         ],
     )
     return resuponse.choices[0].message.content
+
+
+def get_ai_response():
+    pass
 
 
 if __name__ == "__main__":
