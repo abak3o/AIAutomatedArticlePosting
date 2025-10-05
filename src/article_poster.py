@@ -82,22 +82,38 @@ class ArticlePoster:
             return False
 
 
-    def generate_article(self) -> tuple[str, str]:
-        """記事生成"""
+def generate_article(self) -> tuple[str, str]:
+    max_retries = 2
+    forbidden_keywords = ["AI", "ラーメン", "焼肉", "スーパー", "コンビニ"]  # 実際のキーワードに置き換え
+    
+    for attempt in range(max_retries):
         try:
             res = gemini()
             title, content = thread2html(res)
-
+            
+            # タイトルクリーニング
+            title = title.replace("記事タイトル", "").strip()
+            
+            # 禁止キーワードチェック
+            if any(keyword in title for keyword in forbidden_keywords):
+                self.logger.warning(f"試行 {attempt + 1}: 禁止キーワード検出 - {title}")
+                continue  # 再生成
+                
             if not title or not content:
-                raise ValueError("記事の生成に失敗しました")
-
+                self.logger.warning(f"試行 {attempt + 1}: 空のタイトルまたは本文")
+                continue  # 再生成
+            
             self.logger.info(f"📄 記事生成完了: {title}")
             return title, content
-
+            
         except Exception as e:
-            self.logger.error(f"❌ 記事生成失敗: {e}")
-            send_discord_log(f"❌ 記事生成失敗: {e}")
-            raise
+            self.logger.warning(f"試行 {attempt + 1} 失敗: {e}")
+            if attempt == max_retries - 1:  # 最終試行
+                self.logger.error("❌ 記事生成失敗")
+                send_discord_log(f"❌ 記事生成失敗: {e}")
+                raise
+    
+    raise ValueError(f"{max_retries}回試行しましたが記事を生成できませんでした")
 
 
     def create_article(self, title: str, content: str) -> bool:
