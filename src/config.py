@@ -29,6 +29,7 @@ class Config:
     HEADLESS = os.getenv("HEADLESS", "true").lower() == "true"
 
     # スケジュール設定
+    """
     SCHEDULE_TIMES = [
         "00:00",
         "07:00",
@@ -41,7 +42,8 @@ class Config:
         "22:00",
         "23:00",
     ]
-    TEST_INTERVAL_MINUTES = 3  # テスト用インターバル
+    TEST_INTERVAL_MINUTES = 30  # テスト用インターバル
+    """
 
 
 config = Config()
