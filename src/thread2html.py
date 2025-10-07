@@ -15,6 +15,10 @@ def format_thread2json(thread: str) -> str:
     split_list = re.split(r"(\n\^)", thread)
 
     thread_title = split_list[0].strip()
+
+    #記事タイトルを削除
+    thread_title = thread_title.replace("記事タイトル", "").strip()
+    
     thread_res = split_list[1:]
     thread_res_list = []
     post_number = 1

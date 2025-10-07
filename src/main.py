@@ -1,6 +1,7 @@
 import schedule
 import time
 from article_poster import ArticlePoster
+from discord import send_discord_log
 from config import config
 
 def scheduled_job():
@@ -23,6 +24,7 @@ schedule.every(30).minutes.do(scheduled_job)
 
 if __name__ == "__main__":
     print("🕒 30分間隔スケジューラーを開始しました...")
+    send_discord_log("🕒 30分間隔スケジューラーを開始しました...")
     print("⏰ 実行間隔: 30分ごと")
     print("🛑 Ctrl+Cで終了")
     
