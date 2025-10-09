@@ -95,7 +95,8 @@ class ArticlePoster:
                 title = title.replace("記事タイトル", "").strip()
                 
                 # 禁止キーワードチェック
-                if any(keyword in title for keyword in forbidden_keywords):
+                # if any(keyword in title for keyword in forbidden_keywords):
+                if attempt < max_retries - 1 and any(keyword in title for keyword in forbidden_keywords):
                     self.logger.warning(f"試行 {attempt + 1}: 禁止キーワード検出 - {title}")
                     continue  # 再生成
                     
