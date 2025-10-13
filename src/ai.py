@@ -16,7 +16,8 @@ def chatGPT() -> str:
 def gemini() -> str:
     client = genai.Client(api_key=config.GOOGLE_API_KEY)
     response = client.models.generate_content(
-        model="gemini-2.5-flash", contents=config.PROMPT
+        # model="gemini-2.5-flash", contents=config.PROMPT
+        model=config.GEMINI_MODEL, contents=config.PROMPT
     )
     return response.text
 

@@ -17,6 +17,8 @@ class Config:
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+    # GEMINI_MODEL = "gemini-2.5-flash"
+    GEMINI_MODEL = "gemini-2.5-pro"
 
     # Discord設定
     DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")

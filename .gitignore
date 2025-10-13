@@ -10,8 +10,8 @@ wheels/
 .venv
 
 # environment variable
-.env
-.env.docker
+.env*
+!.env.template
 
 # memo
 text.txt
