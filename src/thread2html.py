@@ -1,6 +1,7 @@
 import re
 import json
 import random
+from config import config
 from ai import chatGPT, gemini, deepseek
 
 
@@ -36,7 +37,7 @@ def format_thread2json(thread: str) -> str:
 
         # MODEが"GAME"なら1を、そうでなければ1から4の乱数を加算値とする
         # gemini-pro は上手くしよる
-        increment = 1 if MODE == "GAME" else random.randint(1, 4)
+        increment = 1 if config.MODE == "GAME" else random.randint(1, 4)
         post_number += increment
         thread_count += 1
 
