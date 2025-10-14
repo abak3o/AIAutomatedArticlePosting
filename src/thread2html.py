@@ -33,12 +33,14 @@ def format_thread2json(thread: str) -> str:
         post_data = {"id": post_number, "user": "名無しのJ民", "content": content}
 
         thread_res_list.append(post_data)
-        random_num = random.randint(1, 4)
-        post_number += random_num
+
+        # MODEが"GAME"なら1を、そうでなければ1から4の乱数を加算値とする
+        # gemini-pro は上手くしよる
+        increment = 1 if MODE == "GAME" else random.randint(1, 4)
+        post_number += increment
         thread_count += 1
 
     thread_data = {"title": thread_title, "thread_res": thread_res_list}
-
     json_output = json.dumps(thread_data, ensure_ascii=False, indent=2)
 
     print(json_output)

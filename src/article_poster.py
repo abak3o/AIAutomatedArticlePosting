@@ -84,8 +84,8 @@ class ArticlePoster:
 
     def generate_article(self) -> tuple[str, str]:
         max_retries = 3
-        forbidden_keywords = ["AI", "ラーメン", "焼肉", "スーパー", "コンビニ"]  # 実際のキーワードに置き換え
-        
+        forbidden_keywords = config.FORBIDDEN_KEYWORDS
+
         for attempt in range(max_retries):
             try:
                 res = gemini()

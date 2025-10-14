@@ -1,10 +1,26 @@
 import os
+import sys
 from dotenv import load_dotenv
 
-load_dotenv()
+if len(sys.argv) < 2:
+    sys.exit(1)
+    
+env_suffix = sys.argv[1]
+dotenv_file = f".env.{env_suffix}"
+
+load_dotenv(dotenv_path=dotenv_file)
 
 
 class Config:
+
+    MODE = os.getenv("MODE")
+
+    # 禁止ワード
+    forbidden_keywords = os.getenv("FORBIDDEN_KEYWORDS")
+    if forbidden_keywords:
+        FORBIDDEN_KEYWORDS = forbidden_keywords.split(",")
+    else:
+        FORBIDDEN_KEYWORDS = []
 
     # Livedoorブログ設定
     LIVEDOOR_URL = os.getenv("LIVEDOOR_URL")
@@ -17,8 +33,7 @@ class Config:
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
-    # GEMINI_MODEL = "gemini-2.5-flash"
-    GEMINI_MODEL = "gemini-2.5-pro"
+    GEMINI_MODEL = os.getenv("GEMINI_MODEL")
 
     # Discord設定
     DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
@@ -29,23 +44,5 @@ class Config:
 
     # 実行モード
     HEADLESS = os.getenv("HEADLESS", "true").lower() == "true"
-
-    # スケジュール設定
-    """
-    SCHEDULE_TIMES = [
-        "00:00",
-        "07:00",
-        "12:00",
-        "17:00",
-        "18:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00",
-    ]
-    TEST_INTERVAL_MINUTES = 30  # テスト用インターバル
-    """
-
 
 config = Config()

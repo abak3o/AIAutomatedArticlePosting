@@ -29,8 +29,8 @@ if __name__ == "__main__":
     print("🛑 Ctrl+Cで終了")
     
     # 初回実行（コメントアウト解除で有効化）
-    # print("🚀 初回実行します...")
-    # scheduled_job()
+    print("🚀 初回実行します...")
+    scheduled_job()
     
     try:
         while True:
