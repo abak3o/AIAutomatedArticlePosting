@@ -1,6 +1,9 @@
 from openai import OpenAI
 from google import genai
 from config import config
+import google.generativeai as genai
+from google.generativeai.types import GenerationConfig
+
 
 
 def chatGPT() -> str:
@@ -14,13 +17,24 @@ def chatGPT() -> str:
 
 
 def gemini() -> str:
-    client = genai.Client(api_key=config.GOOGLE_API_KEY)
-    response = client.models.generate_content(
-        # model="gemini-2.5-flash", contents=config.PROMPT
-        model=config.GEMINI_MODEL, contents=config.PROMPT
-    )
-    return response.text
+    # APIキーを設定
+    genai.configure(api_key=config.GOOGLE_API_KEY)
 
+    # モデルを初期化
+    model = genai.GenerativeModel(config.GEMINI_MODEL)
+
+    # temperature を含む生成設定
+    generation_config = GenerationConfig(
+        temperature=0.85
+    )
+
+    # コンテンツを生成
+    response = model.generate_content(
+        contents=config.PROMPT,
+        generation_config=generation_config
+    )
+
+    return response.text
 
 def deepseek() -> str:
     client = OpenAI(
@@ -49,6 +63,6 @@ def get_ai_response():
 
 if __name__ == "__main__":
     # res = chatGPT()
-    # res = gemini()
-    res = deepseek()
+    res = gemini()
+    # res = deepseek()
     print(res)
