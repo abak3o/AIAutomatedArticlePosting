@@ -41,6 +41,9 @@ class Config:
     # アプリケーション設定
     VIEWPORT = {"width": 1920, "height": 1000}
     WAIT_TIMEOUT = 30000  # 30秒に延長
+    POST_INTERVAL = 30  # 30秒に延長
+    if MODE == "GAME":
+        POST_INTERVAL = 60
 
     # 実行モード
     HEADLESS = os.getenv("HEADLESS", "true").lower() == "true"
